@@ -19,8 +19,8 @@
  *    'Tue, 26 Jan 2016 13:48:02 GMT' => Date()
  *    'Sun, 17 May 1998 03:00:00 GMT+01' => Date()
  */
-function parseDataFromRfc2822(/* value */) {
-  throw new Error('Not implemented');
+function parseDataFromRfc2822(value) {
+  return Date.parse(value);
 }
 
 /**
@@ -34,8 +34,8 @@ function parseDataFromRfc2822(/* value */) {
  *    '2016-01-19T16:07:37+00:00'    => Date()
  *    '2016-01-19T08:07:37Z' => Date()
  */
-function parseDataFromIso8601(/* value */) {
-  throw new Error('Not implemented');
+function parseDataFromIso8601(value) {
+  return Date.parse(value);
 }
 
 
@@ -53,8 +53,8 @@ function parseDataFromIso8601(/* value */) {
  *    Date(2012,1,1)    => true
  *    Date(2015,1,1)    => false
  */
-function isLeapYear(/* date */) {
-  throw new Error('Not implemented');
+function isLeapYear(date) {
+  return new Date(date.getFullYear(), 1, 29).getDate() === 29;
 }
 
 
@@ -73,8 +73,22 @@ function isLeapYear(/* date */) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,10,0,0,250)     => "00:00:00.250"
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
-function timeSpanToString(/* startDate, endDate */) {
-  throw new Error('Not implemented');
+function timeSpanToString(startDate, endDate) {
+  let hours = endDate.getHours() - startDate.getHours();
+  let minutes = endDate.getMinutes() - startDate.getMinutes();
+  let sec = endDate.getSeconds() - startDate.getSeconds();
+  let ms = endDate.getMilliseconds() - startDate.getMilliseconds();
+  const zero = '0';
+  if (hours < 10) hours = zero + hours;
+  if (minutes < 10) minutes = zero + minutes;
+  if (sec < 10) sec = zero + sec;
+  if (ms < 10) {
+    ms = zero + zero + ms;
+  }
+  if (ms >= 10 && ms < 100) {
+    ms = zero + ms;
+  }
+  return `${hours}:${minutes}:${sec}.${ms}`;
 }
 
 
@@ -89,13 +103,28 @@ function timeSpanToString(/* startDate, endDate */) {
  * @return {number}
  *
  * @example:
- *    Date.UTC(2016,2,5, 0, 0) => 0
+ *       => 0
  *    Date.UTC(2016,3,5, 3, 0) => Math.PI/2
  *    Date.UTC(2016,3,5,18, 0) => Math.PI
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
-function angleBetweenClockHands(/* date */) {
+function angleBetweenClockHands(/* data */) {
   throw new Error('Not implemented');
+  // let h = date.getHours();
+  // let m = date.getMinutes();
+  // if (h === 12) h = 0;
+  // if (m === 60) {
+  //   m = 0;
+  //   h += 1;
+  //   if (h > 12) h -= 12;
+  // }
+  // const angleHour = (h % 12) * 30 + m * 0.5;
+  // const angleMinutes = 6 * m;
+  // let angle = Math.abs(angleHour - angleMinutes);
+  // angle = angle > 180 ? 360 - angle : angle;
+  // if (Math.abs(angle - 90) === 90) { return Math.PI / 2; }
+  // if (Math.abs(angle - 90) === 180 || Math.abs(angle - 90) === 0) { return Math.PI; }
+  // return Math.PI / 2;
 }
 
 
