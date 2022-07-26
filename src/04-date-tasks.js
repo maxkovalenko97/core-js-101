@@ -93,7 +93,7 @@ function timeSpanToString(startDate, endDate) {
 
 
 /**
- * Returns the angle (in radians) between the hands of an analog clock
+ * Returns the final (in radians) between the hands of an analog clock
  * for the specified Greenwich time.
  * If you have problem with solution please read: https://en.wikipedia.org/wiki/Clock_angle_problem
  *
@@ -108,23 +108,14 @@ function timeSpanToString(startDate, endDate) {
  *    Date.UTC(2016,3,5,18, 0) => Math.PI
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
-function angleBetweenClockHands(/* data */) {
-  throw new Error('Not implemented');
-  // let h = date.getHours();
-  // let m = date.getMinutes();
-  // if (h === 12) h = 0;
-  // if (m === 60) {
-  //   m = 0;
-  //   h += 1;
-  //   if (h > 12) h -= 12;
-  // }
-  // const angleHour = (h % 12) * 30 + m * 0.5;
-  // const angleMinutes = 6 * m;
-  // let angle = Math.abs(angleHour - angleMinutes);
-  // angle = angle > 180 ? 360 - angle : angle;
-  // if (Math.abs(angle - 90) === 90) { return Math.PI / 2; }
-  // if (Math.abs(angle - 90) === 180 || Math.abs(angle - 90) === 0) { return Math.PI; }
-  // return Math.PI / 2;
+function angleBetweenClockHands(data) {
+  // throw new Error('Not implemented');
+  let h = data.getUTCHours();
+  const m = data.getUTCMinutes();
+  if (h > 12) h -= 12;
+  const angle = 0.5 * (60 * h - 11 * m);
+  const final = angle > 180 ? 360 - angle : angle;
+  return (Math.abs(final) * Math.PI) / 180;
 }
 
 

@@ -7,9 +7,9 @@
 
 
 /**
- * Return Promise object that is resolved with string value === 'Hooray!!! She said "Yes"!',
- * if boolean value === true is passed, resolved with string value === 'Oh no, she said "No".',
- * if boolean value === false is passed, and rejected
+ * Return Promise object that is resolveolved with string value === 'Hooray!!! She said "Yes"!',
+ * if boolean value === true is passed, resolveolved with string value === 'Oh no, she said "No".',
+ * if boolean value === false is passed, and rejectected
  * with error message === 'Wrong parameter is passed! Ask her again.',
  * if is not boolean value passed
  *
@@ -28,23 +28,29 @@
  *      .catch((error) => console.log(error.message)) // 'Error: Wrong parameter is passed!
  *                                                    //  Ask her again.';
  */
-function willYouMarryMe(/* isPositiveAnswer */) {
-  throw new Error('Not implemented');
+function willYouMarryMe(isPositiveAnswer) {
+  return new Promise((resolve, reject) => {
+    if (isPositiveAnswer === undefined) {
+      reject(new Error('Wrong parameter is passed! Ask her again.'));
+    } else if (isPositiveAnswer === true) {
+      resolve('Hooray!!! She said "Yes"!');
+    } else resolve('Oh no, she said "No".');
+  });
 }
 
 
 /**
- * Return Promise object that should be resolved with array containing plain values.
+ * Return Promise object that should be resolveolved with array containing plain values.
  * Function receive an array of Promise objects.
  *
  * @param {Promise[]} array
  * @return {Promise}
  *
  * @example
- *    const promises = [Promise.resolve(1), Promise.resolve(3), Promise.resolve(12)]
+ *    const promises = [Promise.resolveolve(1), Promise.resolveolve(3), Promise.resolveolve(12)]
  *    const p = processAllPromises(promises);
- *    p.then((res) => {
- *      console.log(res) // => [1, 2, 3]
+ *    p.then((resolve) => {
+ *      console.log(resolve) // => [1, 2, 3]
  *    })
  *
  */
@@ -53,8 +59,8 @@ function processAllPromises(array) {
 }
 
 /**
- * Return Promise object that should be resolved with value received from
- * Promise object that will be resolved first.
+ * Return Promise object that should be resolveolved with value received from
+ * Promise object that will be resolveolved first.
  * Function receive an array of Promise objects.
  *
  * @param {Promise[]} array
@@ -62,12 +68,12 @@ function processAllPromises(array) {
  *
  * @example
  *    const promises = [
- *      Promise.resolve('first'),
- *      new Promise(resolve => setTimeout(() => resolve('second'), 500)),
+ *      Promise.resolveolve('first'),
+ *      new Promise(resolveolve => setTimeout(() => resolveolve('second'), 500)),
  *    ];
  *    const p = processAllPromises(promises);
- *    p.then((res) => {
- *      console.log(res) // => [first]
+ *    p.then((resolve) => {
+ *      console.log(resolve) // => [first]
  *    })
  *
  */
@@ -76,24 +82,28 @@ function getFastestPromise(array) {
 }
 
 /**
- * Return Promise object that should be resolved with value that is
- * a result of action with values of all the promises that exists in array.
- * If some of promise is rejected you should catch it and process the next one.
+ * Return Promise object that should be resolveolved with value that is
+ * a resolveult of action with values of all the promises that exists in array.
+ * If some of promise is rejectected you should catch it and process the next one.
  *
  * @param {Promise[]} array
  * @param {Function} action
  * @return {Promise}
  *
  * @example
- *    const promises = [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)];
+ *    const promises = [Promise.resolveolve(1), Promise.resolveolve(2), Promise.resolveolve(3)];
  *    const p = chainPromises(promises, (a, b) => a + b);
- *    p.then((res) => {
- *      console.log(res) // => 6
+ *    p.then((resolve) => {
+ *      console.log(resolve) // => 6
  *    });
  *
  */
-function chainPromises(/* array, action */) {
-  throw new Error('Not implemented');
+async function chainPromises(array, action) {
+  const result = [];
+  await array.forEach((p) => {
+    p.then((res) => result.push(res)).catch(() => result.push(null));
+  });
+  return result.reduce((acc, el) => (el ? action(acc, el) : acc));
 }
 
 module.exports = {

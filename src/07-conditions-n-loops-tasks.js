@@ -125,8 +125,11 @@ function isTriangle(a, b, c) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rect1, rect2) {
+  if (rect1.top > rect2.height || rect1.height < rect2.top
+    || rect1.width < rect2.left || rect1.left > rect2.width
+  ) return false;
+  return true;
 }
 
 
@@ -318,9 +321,19 @@ function getDigitalRoot(num) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
-  // if (str.length % 2 !== 0) return false;
+function isBracketsBalanced(str) {
+  const brackets = {
+    '[': ']', '{': '}', '<': '>', '(': ')',
+  };
+  const arr = [];
+
+  if (str.length % 2 !== 0) return false;
+
+  for (let i = 0; i < str.length; i += 1) {
+    if (brackets[str[i]]) arr.push(brackets[str[i]]);
+    else if (arr.pop() !== str[i]) return false;
+  }
+  return true;
 }
 
 
@@ -424,15 +437,27 @@ function getMatrixProduct(m1, m2) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
-  // let winner;
-  // position.some((el) => {
-  //   if (el[0] === el[1] && el[0] === el[2]) {
-  //     winner = el[0];
-  //   }
-  // });
-  // return (winner);
+function evaluateTicTacToePosition(pos) {
+  function finish(a, b, c) {
+    return (a && b && c) ? (a === b && a === c && b === c) : false;
+  }
+  for (let i = 0; i < 3; i += 1) {
+    if (finish(pos[i][0], pos[i][1], pos[i][2])) {
+      return pos[i][0];
+    }
+  }
+  for (let i = 0; i < 3; i += 1) {
+    if (finish(pos[0][i], pos[1][i], pos[2][i])) {
+      return pos[0][i];
+    }
+  }
+  if (finish(pos[0][0], pos[1][1], pos[2][2])) {
+    return pos[0][0];
+  }
+  if (finish(pos[0][2], pos[1][1], pos[2][0])) {
+    return pos[0][2];
+  }
+  return undefined;
 }
 
 
